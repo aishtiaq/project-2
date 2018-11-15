@@ -1,25 +1,33 @@
 // Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
-var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
+var $first_name = $("#first_name");
+var $last_name = $("#last_name");
+var $mob_no = $("#mob_no");
+var $username = $("#username");
+var $password = $("#password");
+var $submitBtn = $("#btn-signup");
+var $loginBtn = $("#btn-login");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  saveExample: function(example) {
+  saveUser: function(user) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
+      url: "api/Users",
+      data: JSON.stringify(user)
     });
   },
-  getExamples: function() {
+  getUser: function(user) {
+   
     return $.ajax({
-      url: "api/examples",
-      type: "GET"
+      headers: {
+        "Content-Type": "application/json"
+      },
+      url: "api/signin",
+      type: "POST",
+      data: JSON.stringify(user)
     });
   },
   deleteExample: function(id) {
@@ -64,22 +72,30 @@ var refreshExamples = function() {
 var handleFormSubmit = function(event) {
   event.preventDefault();
 
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
+  
+  console.log ("i am here");
+
+  var user = {
+    first_name: $first_name.val().trim(),
+    last_name: $last_name.val().trim(),
+    phone: $mob_no.val().trim(),
+    username: $username.val().trim(),
+    password: $password.val().trim()
   };
 
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
-
-  API.saveExample(example).then(function() {
-    refreshExamples();
+  API.saveUser(user).then(function() {
+    if(user) {
+     
+      $first_name.val("");
+      $last_name.val("");
+      $mob_no.val("");
+      $username.val("");
+      $password.val("");
+    }
   });
 
-  $exampleText.val("");
-  $exampleDescription.val("");
+  // $exampleText.val("");
+  // $exampleDescription.val("");
 };
 
 // handleDeleteBtnClick is called when an example's delete button is clicked
@@ -94,6 +110,24 @@ var handleDeleteBtnClick = function() {
   });
 };
 
+var handleLogin = function (){
+ event.preventDefault();
+ 
+  
+  var findUser = {
+    username: $username.val().trim(),
+    password: $password.val().trim()
+  };
+
+  
+  API.getUser(findUser).then(function(dbUsers) {
+   // alert(dbUsers);
+   window.location.href="/dashboard";
+    
+  });
+}
+
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+$loginBtn.on("click", handleLogin);
+// $exampleList.on("click", ".delete", handleDeleteBtnClick);
