@@ -2,6 +2,7 @@ require("dotenv").config();
 var express = require("express");
 var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
+var session = require("express-session");
 
 var db = require("./models");
 
@@ -21,7 +22,12 @@ app.engine(
   })
 );
 app.set("view engine", "handlebars");
-
+app.use(session({
+  secret: 'gw bootcamp',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 }
+}))
 // Routes
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);

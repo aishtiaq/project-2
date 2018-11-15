@@ -1,24 +1,41 @@
 var db = require("../models");
 
 module.exports = function(app) {
-  // Get all examples
-  app.get("/api/examples", function(req, res) {
-    db.Example.findAll({}).then(function(dbExamples) {
-      res.json(dbExamples);
+  // Get all Users
+  app.post("/api/signin", function(req, res) {
+    console.log("in user get api");
+    console.log(req.body);
+    console.log(req.body.username);
+    db.Users.findAll({
+      where : {
+        username: req.body.username,
+        password: req.body.password
+      }
+    }).then(function(dbUsers) {
+      // res.json(dbUsers);
+      if(dbUsers) {
+        req.session.userId = dbUsers[0].id;
+        req.session.user= dbUsers[0];
+        console.log(dbUsers[0].id);
+        
+        return res.redirect("/dashboard");
+      }
     });
   });
 
-  // Create a new example
-  app.post("/api/examples", function(req, res) {
-    db.Example.create(req.body).then(function(dbExample) {
-      res.json(dbExample);
+  // Create a new Users
+  app.post("/api/Users", function(req, res) {
+    console.log ("in api post");
+    console.log(req.body);
+    db.Users.create(req.body).then(function(dbUsers) {
+      res.json(dbUsers);
     });
   });
 
-  // Delete an example by id
-  app.delete("/api/examples/:id", function(req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function(dbExample) {
-      res.json(dbExample);
+  // Delete an Users by id
+  app.delete("/api/Users/:id", function(req, res) {
+    db.Users.destroy({ where: { id: req.params.id } }).then(function(dbUsers) {
+      res.json(dbUsers);
     });
   });
 };
