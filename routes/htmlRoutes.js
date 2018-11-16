@@ -33,6 +33,11 @@ module.exports = function(app) {
   
   });
 
+  app.get("/room", function(req, res) {
+    console.log("In chatroom");
+    res.render("room");
+  })
+
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
     res.render("404");
