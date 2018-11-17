@@ -10,15 +10,12 @@ var connection;
 if (process.env.JAWSDB_URL) {
   connection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
-  console.log('**********');
-  
   connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'password',
     database: 'webrtcDB'
   });
-  console.log(connection);
 };
 
 connection.connect();
