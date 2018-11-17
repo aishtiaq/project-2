@@ -4,6 +4,26 @@ var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
 var session = require("express-session");
 
+var mysql = require('mysql');
+var connection;
+
+if (process.env.JAWSDB_URL) {
+  connection = mysql.createConnection(process.env.JAWSDB_URL);
+} else {
+  console.log('**********');
+  
+  connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    database: 'webrtcDB'
+  });
+  console.log(connection);
+};
+
+connection.connect();
+
+
 var db = require("./models");
 
 var app = express();
