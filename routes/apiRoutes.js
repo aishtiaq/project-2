@@ -3,9 +3,6 @@ var db = require("../models");
 module.exports = function(app) {
   // Get all Users
   app.post("/api/signin", function(req, res) {
-    console.log("in user get api");
-    console.log(req.body);
-    console.log(req.body.username);
     db.Users.findAll({
       where : {
         username: req.body.username,
