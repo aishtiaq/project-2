@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
 var session = require("express-session");
 
+
 var db = require("./models");
 
 var app = express();
@@ -13,6 +14,9 @@ var PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
+// Provide access to node_modules folder
+app.use('/scripts', express.static(`${__dirname}/node_modules/`));
+
 
 // Handlebars
 app.engine(

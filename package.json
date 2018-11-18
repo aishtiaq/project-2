@@ -18,7 +18,9 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
     "mysql2": "^1.6.4",
-    "sequelize": "^4.41.2"
+    "sequelize": "^4.41.2",
+    "simplewebrtc": "^3.0.2",
+    "webrtc-adapter": "^6.4.6"
   },
   "devDependencies": {
     "chai": "^4.1.2",
