@@ -18,6 +18,11 @@ module.exports = function(app) {
     res.render("videochat");
   
   });
+
+  app.get("/chat", function(req, res) {
+    res.render("chatroom");
+  });
+  
   // Load Users page and pass in an Users by id
   app.get("/Users/:id", function(req, res) {
     db.Users.findOne({ where: { id: req.params.id } }).then(function(dbUsers) {
