@@ -4,10 +4,11 @@ var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
 var session = require("express-session");
 
-
 var db = require("./models");
 
 var app = express();
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
 var PORT = process.env.PORT || 3000;
 
 // Middleware
@@ -36,6 +37,21 @@ app.use(session({
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
+//socket.io
+io.on("connection", function(socket) {
+  console.log("a user connected");
+  socket.on("disconnect", function() {
+    console.log("user disconnected");
+  });
+});
+
+io.on("connection", function(socket) {
+  socket.on("chat message", function(msg) {
+    console.log("message: " + msg);
+    io.emit("chat message", msg);
+  });
+});
+
 var syncOptions = { force: false };
 
 // If running a test, set syncOptions.force to true
@@ -46,7 +62,7 @@ if (process.env.NODE_ENV === "test") {
 
 // Starting the server, syncing our models ------------------------------------/
 db.sequelize.sync(syncOptions).then(function() {
-  app.listen(PORT, function() {
+  http.listen(PORT, function() {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,
