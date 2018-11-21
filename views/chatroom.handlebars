@@ -9,7 +9,6 @@
       #messages li:nth-child(odd) { background: #eee; }
       #messages { margin-bottom: 40px }
 </style>
-
 <ul id="messages"></ul>
 <form action="">
     <input id="m" autocomplete="off" /><button>Send</button>
@@ -17,6 +16,7 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    
     $(function() {
         var socket = io();
         $("form").submit(function() {
@@ -25,7 +25,7 @@
             return false;
         });
         socket.on("chat message", function(msg) {
-            $("#messages").append($("<li>").text(msg));
+            $("#messages").append($("<li>").html( "<b>{{Users.username}}: </b>" + msg));
         });
     });
     
