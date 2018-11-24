@@ -1,46 +1,81 @@
- <div class="container">
+ <style>
+   body{
+     background-image: url("../images/space2.jpg");
+   }
 
-     <!-- Chat Room Form -->
-          <div >
-            <div >
-              <div >
-                <label>User Name</label>
-                <input type="text" placeholder="Enter user name" id="username" name="username">
-              </div>
-              <div >
-                <label>Room</label>
-                <input type="text" placeholder="Enter room name" id="roomName" name="roomName">
-              </div>
-            </div>
-            <br>
-            <div >
-              <button id="create-btn" class="submit">Create Room</button>
-              <div class="or"></div>
-              <button id="join-btn" class="submit">Join Room</button>
-            </div>
+   .chat-room-form {
+     background-color: grey;
+     padding: 10px;
+     border-radius: 25px;
+     opacity: 0.7;
+     
+   }
+
+   #local-video{
+     width: 90%;
+     border-radius: 15px;
+   }
+
+  .container{
+    border: 2px solid grey;
+    border-radius: 20px;
+  }
+
+  h1,h2 {
+    color: white;
+  }
+
+ </style>
+
+<!-- Chat Room Form -->
+  <div class="container">
+    <div class="row">
+      <div class="col-6">        
+        <form class="chat-room-form">
+          <div class="form-group">
+            <label for="username">User Name</label>
+            <input type="text" placeholder="Enter user name" id="username" class="form-control" name="username">
           </div>
 
-   
-    <!-- Local Camera -->
-    <div >
-        
+          <div class="form-group">
+            <label for="roomName">Room</label>
+            <input type="text" placeholder="Enter room name" id="roomName" class="form-control" name="roomName">
+          </div>
+
+          <button id="create-btn" type="submit" class="submit btn btn-primary">Create Room</button>
+          <button id="join-btn" type="submit" class="submit btn btn-primary">Join Room</button>
+        </form>
+      </div>
+    </div>
+
+      
+    <div class="row">
+      <!-- Local Camera -->
+      <div class="col-sm-6">       
         <video id="local-video" controls autoplay mirror="false"></video>
-        <h4 style="margin:0;">
+        <h1>
         Local Camera
-        </h4>
+        </h1>
+      </div>
+
+      <!-- Remote Cameras -->
+      <div class="col-sm-6">
+        <h2>
+          Remote Cameras
+        </h2>
+        <div id="remote-videos">
+          </div>
+      </div>
     </div>
 
-
-    <!-- Remote Cameras -->
-    <h3 class="">Remote Cameras</h3>
-    <div id="remote-videos" >
-       
-
+    <div class="row">
+      {{> chatroom }}
     </div>
-  </div>
+
 
   
   <!-- Scripts -->
   <script src="scripts/simplewebrtc/out/simplewebrtc-with-adapter.bundle.js"></script>
   <script src="js/app.js"></script>
-  <link rel='stylesheet' href='styles/styles.css' />
+  <link rel='stylesheet' href='styles/styles.css' /> 
+  <link rel='stylesheet' href='styles/partials/chatroom.css' />
