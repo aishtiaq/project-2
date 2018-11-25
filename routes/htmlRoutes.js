@@ -14,8 +14,18 @@ module.exports = function(app) {
   });
 
   app.get("/video", function(req, res) {
+
+    if(req.session.userId) {  
+      db.Users.findOne({ where: { id: req.session.userId } }).then(function(dbUsers) {
+        console.log(dbUsers);
+        res.render("videochat", {
+          Users: dbUsers
+        });
+      });
+    } else {
+      res.render("signin");
+    }
    
-    res.render("videochat");
   
   });
 
