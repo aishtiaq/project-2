@@ -40,6 +40,10 @@ require("./routes/htmlRoutes")(app);
 //socket.io
 io.on("connection", function(socket) {
   console.log("a user connected");
+  socket.on("create", function(room) {
+    socket.join(room);
+    console.log("user joined room: " + room);
+  });
   socket.on("disconnect", function() {
     console.log("user disconnected");
   });
