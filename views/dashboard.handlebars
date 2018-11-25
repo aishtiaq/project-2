@@ -23,8 +23,8 @@
 
             socket.emit("create", roomName);
             console.log("user joined room: " + roomName);
+            window.location.href = "/video";
             return false;
-            window.location.href = "/dashboard";
         });
     });
 
