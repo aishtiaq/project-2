@@ -18,3 +18,21 @@
 
        
 </div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+    $(function() {
+        var socket = io();
+        var roomName = $("#roomName").val();
+        $("#create-btn").on("click", function() {
+
+            socket.emit("create", roomName);
+            console.log("user joined room: " + roomName);
+            return false;
+            window.location.href = "/chat";
+        });
+    });
+
+
+</script>
