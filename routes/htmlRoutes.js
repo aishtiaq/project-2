@@ -3,14 +3,11 @@ var db = require("../models");
 module.exports = function(app) {
   // Load index page
   app.get("/", function(req, res) {
-   
-      res.render("signup");
-    
+    res.render("signup");
   });
+
   app.get("/signin", function(req, res) {
-   
     res.render("signin");
-  
   });
 
   app.get("/video", function(req, res) {
@@ -25,8 +22,6 @@ module.exports = function(app) {
     } else {
       res.render("signin");
     }
-   
-  
   });
 
   app.get("/chat", function(req, res) {
@@ -37,7 +32,7 @@ module.exports = function(app) {
       });
     });
   });
-  
+
   // Load Users page and pass in an Users by id
   app.get("/Users/:id", function(req, res) {
     db.Users.findOne({ where: { id: req.params.id } }).then(function(dbUsers) {
@@ -46,6 +41,7 @@ module.exports = function(app) {
       });
     });
   });
+
   app.get("/dashboard", function(req, res) {
     console.log("in dashboard route");
     db.Users.findOne({ where: { id: req.session.userId } }).then(function(dbUsers) {
@@ -54,14 +50,10 @@ module.exports = function(app) {
         Users: dbUsers
       });
     });
-    
-  
   });
 
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
     res.render("404");
   });
-
-  
 };

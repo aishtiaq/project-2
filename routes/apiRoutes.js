@@ -1,11 +1,9 @@
 var db = require("../models");
-const bcrypt = require('bcrypt');
+var bcrypt = require("bcrypt");
 
 module.exports = function(app) {
   // Get all Users
   app.post("/api/signin", function(req, res1) {
-
-    
     db.Users.findAll({
       where : {
         username: req.body.username
@@ -24,13 +22,11 @@ module.exports = function(app) {
             req.session.userId = dbUsers[0].id;
             req.session.user= dbUsers[0];
             console.log(dbUsers[0].id);
-        
             res1.redirect("/dashboard");
             return true;
           }
           return false;
         });
-        
       }
     });
   });
