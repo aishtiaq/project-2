@@ -1,0 +1,9 @@
+#message-form {
+    padding-top: 50px;
+}
+
+#messages {
+    min-height: 225px;
+    max-height: 225px;
+    overflow-y: scroll;
+}

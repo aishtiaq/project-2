@@ -62,7 +62,7 @@ var handleFormSubmit = function(event) {
 };
 
 
-var handleLogin = function (){
+var handleLogin = function (event){
  event.preventDefault();
  
   

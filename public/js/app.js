@@ -39,7 +39,7 @@ window.addEventListener('load', () => {
   webrtc.on('videoAdded', (video, peer) => {
     // eslint-disable-next-line no-console
     const id = webrtc.getDomId(peer);
-    const html = '<div id="'+id +'" >\
+    const html = '<div id="'+id +'" class="remote-video" >\
     </div>';
     console.log("someone joined");
     
@@ -51,9 +51,9 @@ window.addEventListener('load', () => {
     }
     console.log("id is "+id);
     $('#'+id).html(video);
-    $('#'+id+'video').addAttribute('muted');
-    $('#'+id+'video').addAttribute('mirror','false');
-    $('#'+id+'video').addAttribute('controls');
+    // $('#'+id).addAttribute('muted');
+    // $('#'+id).addAttribute('mirror','false');
+    // $('#'+id).addAttribute('controls');
     remoteVideosCount += 1;
   });
 
