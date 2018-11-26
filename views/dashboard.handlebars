@@ -43,7 +43,7 @@
             socket.emit("create", roomName);
             
             var path="/video?method=create&roomName="+roomName;
-            alert(path);
+          
             window.location.href = path; 
             return false;
         });
@@ -55,7 +55,7 @@
             socket.emit("join", roomName);
             
             var path="/video?method=join&roomName="+roomName;
-            alert(path);
+        
             window.location.href = path; 
             return false;
         });

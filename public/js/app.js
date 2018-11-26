@@ -1,11 +1,9 @@
 //window.addEventListener('load', () => {
+  
 $(function() {
-  Handlebars.registerHelper('json',function(obj) {
-    return new Handlebars.SafeString(JSON.stringify(obj))
-  })
-  //console.log("chat room is "+JSON.parse('{{{json roomName}}}'));
-  var room=JSON.parse('{{{json roomName}}}');
-  console.log("some more "+room);
+  
+  console.log("chat room is {{roomName}}");
+  
   const localVideoEl = $('#local-video');
 
   // Remote Videos
@@ -108,17 +106,15 @@ $(function() {
   // Room Submit Button Handler
   // $('.submit').on('click', (event) => {
    
-    const roomName = "{{{roomName}}}";
-    var method = "{{method}}";
+    const roomName = $("#room").html();
+    var method = $("#room").attr( "attr" );
     console.log(method);
     console.log(roomName);
-    // if (event.target.id === 'create-btn') {
-    //   alert(roomName);
-    //   createRoom(roomName);
-    // } else {
-    //   alert(roomName);
-    //   joinRoom(roomName);
-    // }
+    if (method === 'create') {
+      createRoom(roomName);
+    } else {
+      joinRoom(roomName);
+    }
     // return false;
   // });
 });
