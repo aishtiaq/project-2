@@ -1,11 +1,11 @@
-window.addEventListener('load', () => {
-
-  
-  const messages = [];
-  let username;
-
-  // Local Video
-  
+//window.addEventListener('load', () => {
+$(function() {
+  Handlebars.registerHelper('json',function(obj) {
+    return new Handlebars.SafeString(JSON.stringify(obj))
+  })
+  //console.log("chat room is "+JSON.parse('{{{json roomName}}}'));
+  var room=JSON.parse('{{{json roomName}}}');
+  console.log("some more "+room);
   const localVideoEl = $('#local-video');
 
   // Remote Videos
@@ -83,18 +83,20 @@ window.addEventListener('load', () => {
   const createRoom = (roomName) => {
     // eslint-disable-next-line no-console
     console.info(`Creating new room: ${roomName}`);
+    
     webrtc.createRoom(roomName, (err, name) => {
-     console.log("room created");
-      
+      console.log("webrtc room created");
+      // var path="/video?roomName="+roomName;
+      // window.location.href = path;
     });
   };
 
   // Join existing Chat Room
   const joinRoom = (roomName) => {
     // eslint-disable-next-line no-console
+    
     console.log(`Joining Room: ${roomName}`);
     webrtc.joinRoom(roomName);
-    
   };
 
   // Receive message from remote user
@@ -102,16 +104,21 @@ window.addEventListener('load', () => {
    
   });
 
-  // Room Submit Button Handler
-  $('.submit').on('click', (event) => {
   
-    username = $('#username').val();
-    const roomName = $('#roomName').val().toLowerCase();
-    if (event.target.id === 'create-btn') {
-      createRoom(roomName);
-    } else {
-      joinRoom(roomName);
-    }
-    return false;
-  });
+  // Room Submit Button Handler
+  // $('.submit').on('click', (event) => {
+   
+    const roomName = "{{{roomName}}}";
+    var method = "{{method}}";
+    console.log(method);
+    console.log(roomName);
+    // if (event.target.id === 'create-btn') {
+    //   alert(roomName);
+    //   createRoom(roomName);
+    // } else {
+    //   alert(roomName);
+    //   joinRoom(roomName);
+    // }
+    // return false;
+  // });
 });

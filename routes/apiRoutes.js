@@ -12,25 +12,18 @@ module.exports = function(app) {
       }
     }).then(function(dbUsers) {
       // res.json(dbUsers);
-      console.log(req.body.password);
-      console.log(dbUsers);
+      
       if(dbUsers) {
-        console.log("in db users");
-        console.log(dbUsers[0].password);
-
         bcrypt.compare(req.body.password, dbUsers[0].password).then(function(res) {
           console.log("in compare");
           if(res === true) {  
             req.session.userId = dbUsers[0].id;
             req.session.user= dbUsers[0];
-            console.log(dbUsers[0].id);
-        
             res1.redirect("/dashboard");
             return true;
           }
           return false;
         });
-        
       }
     });
   });
@@ -42,10 +35,7 @@ module.exports = function(app) {
     var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(req.body.password, salt);
     req.body.password=hash;
-    console.log(hash);
-    console.log("saving user");
     db.Users.create(req.body).then(function(dbUsers) {
-      console.log("in create");
       res.json(dbUsers);
     });
   });
