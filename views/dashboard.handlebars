@@ -12,24 +12,6 @@
 
        
 </div>
-
-<script src="/socket.io/socket.io.js"></script>
-<script>
-
-    $(function() {
-        var socket = io();
-        var roomName = $("#roomName").val();
-        $("#create-btn").on("click", function() {
-
-            socket.emit("create", roomName);
-            console.log("user joined room: " + roomName);
-            window.location.href = "/video";
-            return false;
-        });
-    });
-
-
-</script>
 <div class="container">
     <div class="row">
       <div class="col-6">        
@@ -45,3 +27,39 @@
       </div>
     </div>
 </div>
+<script src="scripts/simplewebrtc/out/simplewebrtc-with-adapter.bundle.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+{{!-- <script src="js/app.js"></script> --}}
+<script>
+
+   
+       
+        
+        $("#create-btn").on("click", function(e) {
+            var socket = io();
+            var roomName = $("#roomName").val();
+            //e.preventDefault();
+            
+            socket.emit("create", roomName);
+            
+            var path="/video?method=create&roomName="+roomName;
+            alert(path);
+            window.location.href = path; 
+            return false;
+        });
+        $("#join-btn").on("click", function(e) {
+            var socket = io();
+            var roomName = $("#roomName").val();
+            //e.preventDefault();
+            
+            socket.emit("join", roomName);
+            
+            var path="/video?method=join&roomName="+roomName;
+            alert(path);
+            window.location.href = path; 
+            return false;
+        });
+
+
+
+</script>

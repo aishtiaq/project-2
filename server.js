@@ -42,17 +42,24 @@ io.on("connection", function(socket) {
   console.log("a user connected");
   socket.on("create", function(room) {
     socket.join(room);
+    console.log("user created and joined room: " + room);
+  });
+  socket.on("join", function(room) {
+    socket.join(room);
     console.log("user joined room: " + room);
   });
   socket.on("disconnect", function() {
     console.log("user disconnected");
   });
-});
-
-io.on("connection", function(socket) {
+  var room_name = socket.request.headers.referer.split("=")[2];
+  console.log("room name is : "+room_name);
   socket.on("chat message", function(msg) {
-    console.log("message: " + msg);
-    io.emit("chat message", msg);
+    socket.join(room_name);
+    console.log("message from server: " + msg);
+    console.log("room to emit message: "+room_name);
+    
+    io.in(room_name).emit("update message", msg);
+    
   });
 });
 

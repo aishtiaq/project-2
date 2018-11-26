@@ -2,7 +2,7 @@
 <div class="col-6">
     <div id ="chat-card" class="card">  
         <div class="card-body">
-            <h5 class="card-title">ChatBox</h5>
+            <h5 class="card-title">ChatBox {{roomName}} </h5>
             <ul class="list-group" id="messages"></ul>
             <form class="form-inline" id="message-form" action="">
                 <label class="sr-only" for="m">Name</label>
@@ -28,7 +28,7 @@
             $("#m").val("");
         });
 
-        socket.on("chat message", function(msg) {
+        socket.on("update message", function(msg) {
             var messages = $("#messages");
             messages.append($("<li class='chat-item list-group-item'>").html( "<b>{{Users.username}}: </b>" + msg));
             scrollToBottom(messages);

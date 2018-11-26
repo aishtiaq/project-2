@@ -14,12 +14,14 @@ module.exports = function(app) {
   });
 
   app.get("/video", function(req, res) {
-
+    console.log(req.query.roomName);
+    console.log(req.query.method);
     if(req.session.userId) {  
       db.Users.findOne({ where: { id: req.session.userId } }).then(function(dbUsers) {
-        console.log(dbUsers);
         res.render("videochat", {
-          Users: dbUsers
+          Users: dbUsers,
+          roomName: req.query.roomName,
+          method: req.query.method
         });
       });
     } else {
@@ -47,9 +49,7 @@ module.exports = function(app) {
     });
   });
   app.get("/dashboard", function(req, res) {
-    console.log("in dashboard route");
     db.Users.findOne({ where: { id: req.session.userId } }).then(function(dbUsers) {
-      console.log(dbUsers);
       res.render("dashboard", {
         Users: dbUsers
       });
