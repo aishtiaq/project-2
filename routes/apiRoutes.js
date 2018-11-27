@@ -46,4 +46,12 @@ module.exports = function(app) {
       res.json(dbUsers);
     });
   });
+
+  // Create a new Room
+  app.post("/api/Rooms", function(req, res) {
+    console.log(req.body);
+    db.Rooms.create(req.body).then(function(dbRooms) {
+      res.json(dbRooms);
+    });
+  });
 };

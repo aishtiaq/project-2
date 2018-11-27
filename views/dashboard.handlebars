@@ -22,44 +22,20 @@
           </div>
 
           <button id="create-btn" type="submit" class="submit btn btn-primary">Create Room</button>
-          <button id="join-btn" type="submit" class="submit btn btn-primary">Join Room</button>
+          {{!-- <button id="join-btn" type="submit" class="submit btn btn-primary">Join Room</button> --}}
         </form>
       </div>
     </div>
 </div>
+<div class="roomList">
+    <ul class="rooms">
+        {{#each Rooms}}
+            <li><a href="/video?method=join&roomName={{room_name}}">{{room_name}}</a></li>
+        {{/each}}
+    </ul>
+</div>
 <script src="scripts/simplewebrtc/out/simplewebrtc-with-adapter.bundle.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-{{!-- <script src="js/app.js"></script> --}}
-<script>
 
-   
-       
-        
-        $("#create-btn").on("click", function(e) {
-            var socket = io();
-            var roomName = $("#roomName").val();
-            //e.preventDefault();
-            
-            socket.emit("create", roomName);
-            
-            var path="/video?method=create&roomName="+roomName;
-          
-            window.location.href = path; 
-            return false;
-        });
-        $("#join-btn").on("click", function(e) {
-            var socket = io();
-            var roomName = $("#roomName").val();
-            //e.preventDefault();
-            
-            socket.emit("join", roomName);
-            
-            var path="/video?method=join&roomName="+roomName;
-        
-            window.location.href = path; 
-            return false;
-        });
+<script src="js/createrooms.js"></script>
 
-
-
-</script>
