@@ -31,15 +31,6 @@ module.exports = function(app) {
   
   });
 
-  app.get("/chat", function(req, res) {
-    db.Users.findOne({ where: { id: req.session.userId } }).then(function(dbUsers) {
-      console.log(dbUsers);
-      res.render("chatroom", {
-        Users: dbUsers
-      });
-    });
-  });
-  
   // Load Users page and pass in an Users by id
   app.get("/Users/:id", function(req, res) {
     db.Users.findOne({ where: { id: req.params.id } }).then(function(dbUsers) {
