@@ -41,3 +41,14 @@ video {
   
 }
 
+.roomList {
+  color: white;
+  float: left;
+  background-color: gray;
+}
+
+/* .rooms {
+  float: left;
+  background-color: gray;
+} */
+

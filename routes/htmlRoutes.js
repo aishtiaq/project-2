@@ -41,13 +41,26 @@ module.exports = function(app) {
   });
   app.get("/dashboard", function(req, res) {
     db.Users.findOne({ where: { id: req.session.userId } }).then(function(dbUsers) {
-      res.render("dashboard", {
-        Users: dbUsers
+      db.Rooms.findAll({}).then(function(dbRooms) {
+        res.render("dashboard", {
+          Rooms: dbRooms,
+          Users: dbUsers
+        });
       });
+      // res.render("dashboard", {
+      //   Users: dbUsers
+      // });
     });
     
-  
   });
+
+  // app.get("/rooms", function(req,res) {
+  //   db.Rooms.findAll({}).then(function(dbRooms) {
+  //     res.render("dashboard", {
+  //       Rooms: dbRooms
+  //     });
+  //   });  
+  // })
 
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
