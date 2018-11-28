@@ -9,7 +9,7 @@ var $loginBtn = $("#btn-login");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  saveUser: function(user) {
+  saveUser: function (user) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
@@ -19,8 +19,8 @@ var API = {
       data: JSON.stringify(user)
     });
   },
-  getUser: function(user) {
-   
+  getUser: function (user) {
+
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
@@ -36,7 +36,7 @@ var API = {
 
 // handleFormSubmit is called whenever we submit a new example
 // Save the new example to the db and refresh the list
-var handleFormSubmit = function(event) {
+var handleFormSubmit = function (event) {
   event.preventDefault();
 
   var user = {
@@ -47,38 +47,92 @@ var handleFormSubmit = function(event) {
     password: $password.val().trim()
   };
 
-  API.saveUser(user).then(function() {
-    if(user) {
-     
+  API.saveUser(user).then(function () {
+    if (user) {
+
       $first_name.val("");
       $last_name.val("");
       $mob_no.val("");
       $username.val("");
       $password.val("");
-      window.location.href="/signin";
+      window.location.href = "/signin";
     }
   });
 
 };
 
 
-var handleLogin = function (event){
- event.preventDefault();
- 
-  
-  var findUser = {
-    username: $username.val().trim(),
-    password: $password.val().trim()
-  };
+var handleLogin = function (event) {
+  event.preventDefault();
 
+  $("#nameInput").removeClass("is-invalid");
+  $("#passwordInput").removeClass("is-invalid");
+  $("#nameError").html("");
+  $("#passwordError").html("");
+
+  if(validate()) {
+    var findUser = {
+      username: $("#nameInput").val().trim(),
+      password: $("#passwordInput").val().trim()
+    };
   
-  API.getUser(findUser).then(function(dbUsers) {
-   // alert(dbUsers);
-   window.location.href="/dashboard";
-    
-  });
+  
+    API.getUser(findUser).then(function (result) {
+      console.log(result);
+      if(result.error1) {
+        $("#passwordInput").addClass("is-invalid");
+        $("#passwordError").html(result.error1);
+      } else if(result.error2) {
+        $("#nameInput").addClass("is-invalid");
+        $("#nameError").html(result.error2);
+      } else {
+        window.location.href = "/dashboard";
+      }
+      
+    });
+  }
+  
 }
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
 $loginBtn.on("click", handleLogin);
+
+function validate(e) {
+
+  name = $("#nameInput").val().trim();
+  pass = $("#passwordInput").val().trim();
+
+
+  var errors;
+
+  if (!checkLength(name, 1, 250)) {
+    errors = true;
+    $("#nameInput").addClass("is-invalid");
+    $("#nameError").html("Username should be between 1 and 250 characters");
+  }
+
+  if (!checkLength(pass, 1, 25)) {
+    errors = true;
+    $("#passwordInput").addClass("is-invalid");
+    $("#passwordError").html("Password should be between 1 and 250 characters");
+  }
+
+  if (errors) {
+
+    return false;
+
+  } else {
+    return true;
+  }
+
+
+}
+
+function checkLength(text, min, max) {
+
+  if (text.length < min || text.length > max) {
+    return false;
+  }
+  return true;
+}

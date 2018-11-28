@@ -12,8 +12,8 @@ module.exports = function(app) {
       }
     }).then(function(dbUsers) {
       // res.json(dbUsers);
-      
-      if(dbUsers) {
+      console.log(dbUsers);
+      if(dbUsers.length > 0) {
         bcrypt.compare(req.body.password, dbUsers[0].password).then(function(res) {
           console.log("in compare");
           if(res === true) {  
@@ -22,8 +22,11 @@ module.exports = function(app) {
             res1.redirect("/dashboard");
             return true;
           }
-          return false;
+          
+          res1.json({error1: "Incorrect Password"});
         });
+      } else {
+        res1.json({error2: "Incorrect Username"});
       }
     });
   });
