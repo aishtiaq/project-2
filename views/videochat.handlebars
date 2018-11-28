@@ -1,34 +1,32 @@
-
-
 <!-- Chat Room Form -->
+<div id= "gradient">
   <div class="container">
-    
-
     <h1 id="room" attr="{{method}}" >{{roomName}}</h1>
       
     <div class="row">
       <!-- Local Camera -->
-      <div class="col-sm-6">       
-        <video id="local-video" controls autoplay></video>
+        <div class="col-sm-6">       
+          <video id="local-video" controls autoplay></video>
         {{!-- <h1>
         Local Camera
         </h1> --}}
-      </div>
+        </div>
 
       <!-- Remote Cameras -->
-      <div class="col-sm-6">
+        <div class="col-sm-6">
         {{!-- <h2>
           Remote Cameras
         </h2> --}}
-        <div id="remote-videos">
+          <div id="remote-videos">
           </div>
-      </div>
+        </div>
     </div>
 
     <div class="row">
       {{> chatroom }}
     </div>
-
+  </dv>
+</div>
 
   
   <!-- Scripts -->
