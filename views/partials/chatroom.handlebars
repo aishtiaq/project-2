@@ -2,7 +2,7 @@
 <div class="col-6">
     <div id ="chat-card" class="card">  
         <div class="card-body">
-            <h5 class="card-title">ChatBox {{roomName}} </h5>
+            <h5 class="card-title">Chat</h5>
             <ul class="list-group" id="messages"></ul>
             <form class="form-inline" id="message-form" action="">
                 <label class="sr-only" for="m">Name</label>
@@ -20,6 +20,10 @@
     
     $(function() {
         var socket = io();
+        socket.on('connect', function(){
+            // call the server-side function 'adduser' and send one parameter (value of prompt)
+            socket.emit('adduser', "{{Users.username}}", "{{roomName}}");
+	    });
 
         $("#message-form").submit(function(e) {
             e.preventDefault();
@@ -28,9 +32,9 @@
             $("#m").val("");
         });
 
-        socket.on("update message", function(msg) {
+        socket.on("update message", function(username, msg) {
             var messages = $("#messages");
-            messages.append($("<li class='chat-item list-group-item'>").html( "<b>{{Users.username}}: </b>" + msg));
+            messages.append($("<li class='chat-item list-group-item'>").html( "<b>"+username+": </b>" + msg));
             scrollToBottom(messages);
         });
 

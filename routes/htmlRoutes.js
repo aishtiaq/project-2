@@ -1,23 +1,23 @@
 var db = require("../models");
 
-module.exports = function(app) {
+module.exports = function (app) {
   // Load index page
-  app.get("/", function(req, res) {
-   
-      res.render("signup");
-    
+  app.get("/", function (req, res) {
+
+    res.render("signup");
+
   });
-  app.get("/signin", function(req, res) {
-   
+  app.get("/signin", function (req, res) {
+
     res.render("signin");
-  
+
   });
 
-  app.get("/video", function(req, res) {
+  app.get("/video", function (req, res) {
     console.log(req.query.roomName);
     console.log(req.query.method);
-    if(req.session.userId) {  
-      db.Users.findOne({ where: { id: req.session.userId } }).then(function(dbUsers) {
+    if (req.session.userId) {
+      db.Users.findOne({ where: { id: req.session.userId } }).then(function (dbUsers) {
         res.render("videochat", {
           Users: dbUsers,
           roomName: req.query.roomName,
@@ -25,42 +25,35 @@ module.exports = function(app) {
         });
       });
     } else {
-      res.render("signin");
+      res.redirect("/signin");
     }
-   
-  
+
+
   });
 
-  app.get("/chat", function(req, res) {
-    db.Users.findOne({ where: { id: req.session.userId } }).then(function(dbUsers) {
-      console.log(dbUsers);
-      res.render("chatroom", {
-        Users: dbUsers
-      });
-    });
-  });
-  
   // Load Users page and pass in an Users by id
-  app.get("/Users/:id", function(req, res) {
-    db.Users.findOne({ where: { id: req.params.id } }).then(function(dbUsers) {
+  app.get("/Users/:id", function (req, res) {
+    db.Users.findOne({ where: { id: req.params.id } }).then(function (dbUsers) {
       res.render("Users", {
         Users: dbUsers
       });
     });
   });
-  app.get("/dashboard", function(req, res) {
-    db.Users.findOne({ where: { id: req.session.userId } }).then(function(dbUsers) {
-      db.Rooms.findAll({}).then(function(dbRooms) {
-        res.render("dashboard", {
-          Rooms: dbRooms,
-          Users: dbUsers
+
+
+  app.get("/dashboard", function (req, res) {
+    if (req.session.userId) {
+      db.Users.findOne({ where: { id: req.session.userId } }).then(function (dbUsers) {
+        db.Rooms.findAll({}).then(function (dbRooms) {
+          res.render("dashboard", {
+            Rooms: dbRooms,
+            Users: dbUsers
+          });
         });
       });
-      // res.render("dashboard", {
-      //   Users: dbUsers
-      // });
-    });
-    
+    } else {
+      res.redirect("/signin");
+    }
   });
 
   // app.get("/rooms", function(req,res) {
@@ -72,9 +65,9 @@ module.exports = function(app) {
   // })
 
   // Render 404 page for any unmatched routes
-  app.get("*", function(req, res) {
+  app.get("*", function (req, res) {
     res.render("404");
   });
 
-  
+
 };
