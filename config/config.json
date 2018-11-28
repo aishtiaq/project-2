@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "password",
+    "password": null,
     "database": "webrtcDB",
     "host": "localhost",
     "dialect": "mysql"

@@ -159,3 +159,41 @@ setInterval(updateGradient,10);
 $submitBtn.on("click", handleFormSubmit);
 $loginBtn.on("click", handleLogin);
 
+function validate(e) {
+
+  name = $("#nameInput").val().trim();
+  pass = $("#passwordInput").val().trim();
+
+
+  var errors;
+
+  if (!checkLength(name, 1, 250)) {
+    errors = true;
+    $("#nameInput").addClass("is-invalid");
+    $("#nameError").html("Username should be between 1 and 250 characters");
+  }
+
+  if (!checkLength(pass, 1, 25)) {
+    errors = true;
+    $("#passwordInput").addClass("is-invalid");
+    $("#passwordError").html("Password should be between 1 and 250 characters");
+  }
+
+  if (errors) {
+
+    return false;
+
+  } else {
+    return true;
+  }
+
+
+}
+
+function checkLength(text, min, max) {
+
+  if (text.length < min || text.length > max) {
+    return false;
+  }
+  return true;
+}
