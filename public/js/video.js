@@ -18,20 +18,9 @@ var pcConfig = {
           "username":"d56166d070db3e2e6bb5cea130c539878b6ebd61c5377b3a1e4fa3032f4ad30a",
           "credential":"s5zkTwk28F9T02WhXtkiWJGhuBNP2r0jUevrz2HV0Cc="
     }
-    // ,
-    // {
-    //   "url":"turn:global.turn.twilio.com:3478?transport=tcp",
-    //   "username":"d56166d070db3e2e6bb5cea130c539878b6ebd61c5377b3a1e4fa3032f4ad30a",
-    //   "credential":"s5zkTwk28F9T02WhXtkiWJGhuBNP2r0jUevrz2HV0Cc="
-    // },
-    // {
-    //   "url":"turn:global.turn.twilio.com:443?transport=tcp",
-    //   "username":"d56166d070db3e2e6bb5cea130c539878b6ebd61c5377b3a1e4fa3032f4ad30a",
-    //   "credential":"s5zkTwk28F9T02WhXtkiWJGhuBNP2r0jUevrz2HV0Cc="
-    // }
+  
   ]
-        //,
-     // iceTransports: 'relay'
+      
     
 };
 
@@ -50,22 +39,27 @@ var room = $("#room").html();
 var socket = io.connect();
 
 if (room !== '') {
-  socket.emit('create or join', room);
+  var user = $("#chat-card").attr( "attr" );
+  socket.emit('create or join', room, user);
   console.log('Attempted to create or  join room', room);
+  console.log("user name is "+$("#chat-card").attr( "attr" ));
+ 
 }
 
 socket.on('created', function(room) {
   console.log('Created room ' + room);
+  
   isInitiator = true;
 });
 
-socket.on('full', function(room) {
-  console.log('Room ' + room + ' is full');
-});
+// socket.on('full', function(room) {
+//   console.log('Room ' + room + ' is full');
+// });
 
 socket.on('join', function (room){
   console.log('Another peer made a request to join room ' + room);
   console.log('This peer is the initiator of room ' + room + '!');
+  
   isChannelReady = true;
 });
 
@@ -115,7 +109,7 @@ var localVideo = document.querySelector('#local-video');
 var remoteVideo = document.querySelector('#remote-videos');
 
 navigator.mediaDevices.getUserMedia({
-  audio: false,
+  audio: true,
   video: true
 })
 .then(gotStream)
@@ -254,6 +248,7 @@ function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
   remoteStream = event.stream;
   remoteVideo.srcObject = remoteStream;
+  //remoteVideo.attr("controls");
 }
 
 function handleRemoteStreamRemoved(event) {
@@ -277,3 +272,83 @@ function stop() {
   pc.close();
   pc = null;
 }
+
+$("#message-form").submit(function(e) {
+  e.preventDefault();
+
+  socket.emit("message", $("#m").val(), "chat");
+  $("#m").val("");
+});
+
+socket.on("update message", function(username, msg) {
+  var messages = $("#messages");
+  messages.append($("<li class='chat-item list-group-item'>").html( "<b>"+username+": </b>" + msg));
+  scrollToBottom(messages);
+});
+
+
+
+function scrollToBottom(element) {
+  element.scrollTop(element[0].scrollHeight);
+}
+
+var colors = new Array(
+  [62,35,255],
+  [60,255,60],
+  [255,35,98],
+  [45,175,230],
+  [255,0,255],
+  [255,128,0]);
+
+var step = 0;
+//color table indices for: 
+// current color left
+// next color left
+// current color right
+// next color right
+var colorIndices = [0,1,2,3];
+
+//transition speed
+var gradientSpeed = 0.002;
+
+function updateGradient()
+{
+  
+  if ( $===undefined ) return;
+  
+var c0_0 = colors[colorIndices[0]];
+var c0_1 = colors[colorIndices[1]];
+var c1_0 = colors[colorIndices[2]];
+var c1_1 = colors[colorIndices[3]];
+
+var istep = 1 - step;
+var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
+var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
+var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
+var color1 = "rgb("+r1+","+g1+","+b1+")";
+
+var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
+var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
+var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
+var color2 = "rgb("+r2+","+g2+","+b2+")";
+
+ $('#gradient').css({
+   background: "-webkit-gradient(linear, left top, right top, from("+color1+"), to("+color2+"))"}).css({
+    background: "-moz-linear-gradient(left, "+color1+" 0%, "+color2+" 100%)"});
+  
+  step += gradientSpeed;
+  if ( step >= 1 )
+  {
+    step %= 1;
+    colorIndices[0] = colorIndices[1];
+    colorIndices[2] = colorIndices[3];
+    
+    //pick two new target color indices
+    //do not pick the same as the current one
+    colorIndices[1] = ( colorIndices[1] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+    colorIndices[3] = ( colorIndices[3] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+    
+  }
+}
+
+setInterval(updateGradient,10);
