@@ -55,7 +55,7 @@ var handleFormSubmit = function (event) {
       $mob_no.val("");
       $username.val("");
       $password.val("");
-      window.location.href = "/signin";
+      window.location.href = "/dashboard";
     }
   });
 
