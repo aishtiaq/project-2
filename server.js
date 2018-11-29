@@ -42,51 +42,11 @@ var usernames = {};
 
 // rooms which are currently available in chat
 var rooms = [];
+var roomName;
 //socket.io
 io.on("connection", function (socket) {
-  socket.on('adduser', function (username, chatroom) {
-    // store the username in the socket session for this client
-    socket.username = username;
-    // store the room name in the socket session for this client
-    socket.room = chatroom;
-    // add the client's username to the global list
-    usernames[username] = username;
-    rooms.push(chatroom);
-    // send client to room 1
-    socket.join(chatroom);
-    // echo to client they've connected
-    socket.emit('update message', 'SERVER', 'you have connected to ' + socket.room);
-    // echo to room 1 that a person has connected to their room
-    socket.broadcast.to(socket.room).emit('update message', 'SERVER', username + ' has connected to this room');
-
-  });
-  socket.on("create", function (room) {
-    socket.join(room);
-    console.log("user created and joined room: " + room);
-  });
-  socket.on("join", function (room) {
-    socket.join(room);
-    console.log("user joined room: " + room);
-  });
  
-  var room_name = socket.request.headers.referer.split("=")[2];
-  socket.on("chat message", function (msg) {
-    socket.join(room_name);
-    // console.log("message from server: " + msg);
-    // console.log("room to emit message: "+room_name);
-    // console.log("username is "+socket.username);
-    io.in(room_name).emit("update message", socket.username, msg);
-
-  });
-  // when the user disconnects.. perform this
-	socket.on('disconnect', function(){
-		// remove the username from global usernames list
-		delete usernames[socket.username];
-		
-		// echo globally that this client has left
-		socket.broadcast.emit('update message', 'SERVER', socket.username + ' has disconnected');
-		socket.leave(socket.room);
-  });
+  
 
   function log() {
     var array = ['Message from server:'];
@@ -94,19 +54,26 @@ io.on("connection", function (socket) {
     socket.emit('log', array);
   }
   
-  socket.on('message', function(message) {
+  socket.on('message', function(message, type) {
     log('Client said: ', message);
     // for a real app, would be room-only (not broadcast)
     socket.broadcast.emit('message', message);
+    if(type ==="chat") {
+      io.in(socket.roomname).emit("update message", socket.username, message);
+    }
+    
   });
 
-  socket.on('create or join', function(room) {
+  socket.on('create or join', function(room, username) {
     log('Received request to create or join room ' + room);
 
     var clientsInRoom = io.sockets.adapter.rooms[room];
     var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
     log('Room ' + room + ' now has ' + numClients + ' client(s)');
 
+   // socket.join(room);
+    socket.roomname = room;
+    socket.username =username;
     if (numClients === 0) {
       socket.join(room);
       log('Client ID ' + socket.id + ' created room ' + room);
@@ -118,6 +85,10 @@ io.on("connection", function (socket) {
       socket.join(room);
       socket.emit('joined', room, socket.id);
       io.sockets.in(room).emit('ready');
+      socket.emit('update message', 'SERVER', 'you have connected to ' + room);
+      // echo to room 1 that a person has connected to their room
+      socket.broadcast.to(room).emit('update message', 'SERVER', username + ' has connected to this room');
+      
     } else { // max two clients
       socket.emit('full', room);
     }
@@ -133,6 +104,35 @@ io.on("connection", function (socket) {
       });
     }
   });
+
+//  socket.on('adduser', function (username, chatroom) {
+//     console.log("adding user");
+//     // store the username in the socket session for this client
+//     socket.username = username;
+//     // store the room name in the socket session for this client
+//     socket.room = chatroom;
+//     // add the client's username to the global list
+//     usernames[username] = username;
+//     rooms.push(chatroom);
+//     // send client to room 1
+//     socket.join(chatroom);
+//     // echo to client they've connected
+//     socket.emit('update message', 'SERVER', 'you have connected to ' + socket.room);
+//     // echo to room 1 that a person has connected to their room
+//     socket.broadcast.to(socket.room).emit('update message', 'SERVER', username + ' has connected to this room');
+
+//   });
+
+//   var room_name = socket.request.headers.referer.split("=")[2];
+//   socket.on("chat message", function (msg) {
+//     socket.join(room_name);
+//     // console.log("message from server: " + msg);
+//     // console.log("room to emit message: "+room_name);
+//     // console.log("username is "+socket.username);
+//     io.in(room_name).emit("update message", socket.username, msg);
+
+//   }); 
+  
 
   socket.on('bye', function(){
     console.log('received bye');
