@@ -1,48 +1,41 @@
 <!-- Chat Room Form -->
-<div id= "gradient">
+<div id="gradient">
   <div class="container">
-    <h1 id="room" attr="{{method}}" >{{roomName}}</h1>
-      
-    <div class="row">
-      <!-- Local Camera -->
-        <div class="col-sm-6">       
-          <video id="local-video" controls autoplay></video>
-        {{!-- <h1>
-        Local Camera
-        </h1> --}}
-        </div>
-
-      <!-- Remote Cameras -->
-        <div class="col-sm-6">
-        {{!-- <h2>
-          Remote Cameras
-        </h2> --}}
-          <div id="remote-videos">
-          </div>
-        </div>
-    </div>
+    <h1 id="room" attr="{{method}}">{{roomName}}</h1>
 
     <div class="row">
-      {{> chatroom }}
+      <div id="videos">
+        <video id="local-video" autoplay muted playsinline controls></video>
+        <video id="remote-videos" autoplay muted playsinline></video>
+      </div>
     </div>
-  </dv>
+
+    {{!-- <div class="col-6"> --}}
+      <div id="chat-card" attr="{{Users.username}}" class="card">
+        <div class="card-body">
+          <h5 class="card-title">Chat</h5>
+          <ul class="list-group" id="messages"></ul>
+          <form class="form-inline" id="message-form" action="">
+            <label class="sr-only" for="m">Name</label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="m">
+
+            <button class="btn btn-success">Send</button>
+          </form>
+        </div>
+
+      </div>
+    {{!-- </div> --}}
+
+  </div>
 </div>
 
-  
-  <!-- Scripts -->
-  <script src="scripts/simplewebrtc/out/simplewebrtc-with-adapter.bundle.js"></script>
-  <script src="js/app.js"></script>
-  <link rel='stylesheet' href='styles/video.css' /> 
-  <link rel='stylesheet' href='styles/partials/chatroom.css' />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
-  <script>
 
-   
-    $(function() {
-        console.log("chat room is {{roomName}}");
-    });
-    
-
-
-  </script>
-  
+<!-- Scripts -->
+<script src="scripts/simplewebrtc/out/simplewebrtc-with-adapter.bundle.js"></script>
+{{!--
+<script src="js/app.js"></script> --}}
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/video.js"></script>
+<link rel='stylesheet' href='styles/video.css' />
+<link rel='stylesheet' href='styles/partials/chatroom.css' />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
