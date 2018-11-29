@@ -55,7 +55,7 @@ var handleFormSubmit = function (event) {
       $mob_no.val("");
       $username.val("");
       $password.val("");
-      window.location.href = "/dashboard";
+      window.location.href = "/signin";
     }
   });
 
@@ -168,6 +168,57 @@ function validate(e) {
   var errors;
 
   if (!checkLength(name, 1, 250)) {
+    errors = true;
+    $("#nameInput").addClass("is-invalid");
+    $("#nameError").html("Username should be between 1 and 250 characters");
+  }
+
+  if (!checkLength(pass, 1, 25)) {
+    errors = true;
+    $("#passwordInput").addClass("is-invalid");
+    $("#passwordError").html("Password should be between 1 and 250 characters");
+  }
+
+  if (errors) {
+
+    return false;
+
+  } else {
+    return true;
+  }
+
+
+}
+
+function validateSignup(e) {
+
+  name = $("#nameInput").val().trim();
+  pass = $("#passwordInput").val().trim();
+  first_name = $("#first_name").val().trim();
+  last_name = $("#last_name").val().trim();
+  mob_no = $("#mob_no").val().trim();
+
+  var errors;
+
+  if (!checkLength(name, 1, 250)) {
+    errors = true;
+    $("#first_name").addClass("is-invalid");
+    $("#firstNameError").html("First Name should be between 1 and 250 characters");
+  }
+
+  if (!checkLength(first_name, 1, 250)) {
+    errors = true;
+    $("#nameInput").addClass("is-invalid");
+    $("#nameError").html("Last Name should be between 1 and 250 characters");
+  }
+
+  if (!checkLength(last_name, 1, 250)) {
+    errors = true;
+    $("#nameInput").addClass("is-invalid");
+    $("#nameError").html("Username should be between 1 and 250 characters");
+  }
+
+  if (!checkLength(mob, 1, 11)) {
     errors = true;
     $("#nameInput").addClass("is-invalid");
     $("#nameError").html("Username should be between 1 and 250 characters");

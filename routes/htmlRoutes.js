@@ -8,8 +8,8 @@ module.exports = function (app) {
 
   });
   app.get("/signin", function (req, res) {
-
-    res.render("signin");
+    res.render("signup", {anchor: 'tab-2'});
+   //res.render("signin");
 
   });
 

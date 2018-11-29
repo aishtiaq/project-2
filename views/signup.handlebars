@@ -21,24 +21,29 @@
       </div>
       <div class="sign-up-htm">
         <div class="group">
-          <label for="user" class="label">First Name</label>
+          <label for="first_name" class="label">First Name</label>
          <input type="text" class="form-control" id="first_name" placeholder="First Name">
+         <div id="firstNameError" class="invalid-feedback"></div>
         </div>
         <div class="group">
-          <label for="pass" class="label">Last Name</label>
+          <label for="last_name" class="label">Last Name</label>
           <input type="text" class="form-control" id="last_name" placeholder="Last Name">
+          <div id="lastNameError" class="invalid-feedback"></div>
         </div>
         <div class="group">
-          <label for="pass" class="label">Mobile Number</label>
-          <input type="number" class="form-control" id="mob_no" placeholder="Mobile Number">
+          <label for="mob_no" class="label">Mobile Number</label>
+          <input type="number" class="form-control" id="mob_no" placeholder="Phone Number">
+          <div id="phoneNumberError" class="invalid-feedback"></div>
         </div>
         <div class="group">
-          <label for="pass" class="label">User Name</label>
+          <label for="username" class="label">User Name</label>
           <input type="text" class="form-control" id="username" placeholder="User Name">
+          <div id="usernameError" class="invalid-feedback"></div>
         </div>
         <div class="group">
           <label for="pass" class="label">Password</label>
-          <input type="text" class="form-control" id="password" placeholder="Password">
+          <input type="password" class="form-control" id="password" placeholder="Password">
+          <div id="passwordError" class="invalid-feedback"></div>
         </div>
         <div class="group">
           <button id="btn-signup" type="submit" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
