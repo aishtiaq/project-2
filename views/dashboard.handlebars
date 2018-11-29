@@ -1,28 +1,57 @@
-<div id="gradient">
-<div class="container">
-    <div class="row">
-      <div class="col-6">        
-        <form class="chat-room-form">
-          <div class="form-group">
-            <label for="roomName">Room</label>
-            <input type="text" placeholder="Enter room name" id="roomName" class="form-control" name="roomName">
-            <div id="nameError" class="invalid-feedback"></div>
-          </div>
+<style>
+  body{
+    background: dodgerblue;
+  }
 
-          <button id="create-btn" type="submit" class="submit btn btn-primary">Create Room</button>
-          {{!-- <button id="join-btn" type="submit" class="submit btn btn-primary">Join Room</button> --}}
-        </form>
-      </div>
+  .container {
+    display: block;
+    background: rgb(87, 57, 134);
+    border: 2px solid rgb(242, 240, 240);
+   border-radius: 20px;
+   padding: 2%;
+   margin: auto;
+  }
+
+  h2{
+    color:floralwhite;
+  }
+
+  label{
+    color:floralwhite;
+  }
+</style>
+
+ <div class="container">   
+    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                   
+        <div class="panel panel-info" >
+            <div class="panel-heading">
+                <div class="panel-title"><h2>Create or Join a Room</h2></div>
+            </div>    
+            <div style="padding-top:30px" class="panel-body" >                                          
+                <form id="form">
+                    <div class="form-group">
+                       <label for="roomName">Room</label>
+                        <input type="text" placeholder="Enter room name" id="roomName" class="form-control" name="roomName">
+                        <div id="nameError" class="invalid-feedback"></div>
+                    </div>
+                    <button id="create-btn" type="submit" class="submit btn btn-primary">Create Room</button>
+                    <div class="roomList">
+                      <ul class="rooms">
+                          {{#each Rooms}}
+                        <li><a href="/video?method=join&roomName={{room_name}}">{{room_name}}</a></li>
+                          {{/each}}
+                      </ul>
+                    </div>
+
+                </form>    
+
+
+
+            </div>                    
+        </div> 
     </div>
-</div>
-<div class="roomList">
-    <ul class="rooms">
-        {{#each Rooms}}
-            <li><a href="/video?method=join&roomName={{room_name}}">{{room_name}}</a></li>
-        {{/each}}
-    </ul>
-</div>
-</div>
+       
+    </div>
 <script src="scripts/simplewebrtc/out/simplewebrtc-with-adapter.bundle.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
